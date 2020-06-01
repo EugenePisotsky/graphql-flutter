@@ -43,7 +43,7 @@ class SocketClientConfig {
   /// Can be null, but must be a valid json structure if provided.
   final dynamic initPayload;
 
-  InitOperation get initOperation => InitOperation(initPayload);
+  Future<InitOperation> initOperation() async => InitOperation(await initPayload());
 }
 
 enum SocketConnectionState { NOT_CONNECTED, CONNECTING, CONNECTED }
@@ -105,7 +105,7 @@ class SocketClient {
       );
       _connectionStateController.value = SocketConnectionState.CONNECTED;
       print('Connected to websocket.');
-      _write(config.initOperation);
+      _write(await config.initOperation());
 
       _messageStream =
           _socket.stream.map<GraphQLSocketMessage>(_parseSocketMessage);
