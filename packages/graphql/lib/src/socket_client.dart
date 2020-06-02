@@ -103,9 +103,9 @@ class SocketClient {
         url,
         protocols: protocols,
       );
+      _write(await config.initOperation());
       _connectionStateController.value = SocketConnectionState.CONNECTED;
       print('Connected to websocket.');
-      _write(await config.initOperation());
 
       _messageStream =
           _socket.stream.map<GraphQLSocketMessage>(_parseSocketMessage);
