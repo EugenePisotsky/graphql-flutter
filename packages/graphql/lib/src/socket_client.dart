@@ -99,12 +99,14 @@ class SocketClient {
     print('Connecting to websocket: $url...');
 
     try {
+      final initOp = await config.initOperation();
+
       _socket = await WebSocket.connect(
         url,
         protocols: protocols,
       );
-      _write(await config.initOperation());
       _connectionStateController.value = SocketConnectionState.CONNECTED;
+      _write(initOp);
       print('Connected to websocket.');
 
       _messageStream =
